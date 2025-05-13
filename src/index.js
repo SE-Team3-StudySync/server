@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from 'cors';
 import authRouter from './routers/auth.router.js';
+import userRouter from "./routers/user.router.js";
 
 //환경변수 관리 
 dotenv.config();
@@ -23,7 +24,7 @@ app.get('/', (req, res) => {
 
 //사용하는 Router 
 app.use('/api/auth', authRouter);
-
+app.use('/api/users', userRouter);
 
 
 app.listen(port, () => {
