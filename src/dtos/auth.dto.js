@@ -18,3 +18,12 @@ export const bodyToLogIn = (body) => {
         password: body.password,
     };
 };
+
+export const bodyFromLogIn = (data) => {
+  return {
+    id: data.id,
+    name: data.name,
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken
+  }
+}

@@ -46,7 +46,7 @@ export const authUser = async(data) => {
             `SELECT * FROM user WHERE email = ? AND password = ?;`,
             [data.email, data.password]
         );
-        console.log(result[0]);
+        
         return result[0];
 
     } catch (err) {
