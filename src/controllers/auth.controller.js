@@ -15,5 +15,5 @@ export const handleUserLogIn = async (req, res, next) => {
     console.log("body:", req.body);
     
     const userInfo = await userLogIn(bodyToLogIn(req.body));
-    res.status(StatusCodes.OK).json({ userInfo: userInfo });
+    res.status(StatusCodes.OK).json(userInfo);
 };
