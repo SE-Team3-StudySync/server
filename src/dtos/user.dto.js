@@ -14,3 +14,10 @@ export const responseUserInfoDto = (data) => {
         major: data.major
     };
 };
+
+export const responseInterestDto = (data) => {
+  return {
+    id: data.id,
+    category: data.category
+  };
+};

@@ -1,5 +1,17 @@
-import { responseUserInfoDto } from "../dtos/user.dto.js";
-import { getUserInfo } from "../repositories/user.repository.js"
+import {
+  responseUserInfoDto,
+  responseInterestDto
+} from "../dtos/user.dto.js";
+
+import {
+  getUserInfo,
+  patchUserInfo,
+  selectUserInterests,
+  insertUserInterest,
+  removeUserInterest
+} from "../repositories/user.repository.js";
+
+
 
 export const userInfo = async(data) => {
     try{
@@ -16,3 +28,21 @@ export const userInfo = async(data) => {
         );
     }
 }
+export const updateUserInfo = async (userId, updateData) => {
+  const updatedUser = await patchUserInfo(userId, updateData);
+  return responseUserInfoDto(updatedUser);
+};
+
+export const getUserInterests = async (userId) => {
+  const interests = await selectUserInterests(userId);
+  return interests.map(responseInterestDto);
+};
+
+export const addUserInterest = async (userId, categoryId) => {
+  const newInterest = await insertUserInterest(userId, categoryId);
+  return responseInterestDto(newInterest);
+};
+
+export const deleteUserInterest = async (userInterestId) => {
+  await removeUserInterest(userInterestId);
+};
