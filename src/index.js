@@ -3,6 +3,7 @@ import express from "express";
 import cors from 'cors';
 import authRouter from './routers/auth.router.js';
 import userRouter from "./routers/user.router.js";
+import groupRouter from './routers/group.router.js';
 
 //환경변수 관리 
 dotenv.config();
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 //사용하는 Router 
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
+app.use('/api/groups', groupRouter);
 
 
 app.listen(port, () => {
