@@ -14,7 +14,6 @@ export const verifyTokenMiddleware = (req, res, next) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
         req.user = decoded;
-        console.log("decoded", decoded);
         next();
     });
 
