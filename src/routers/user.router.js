@@ -26,4 +26,4 @@ userRouter.get("/interests", verifyTokenMiddleware, handleGetUserInterests);
 userRouter.post("/interests", verifyTokenMiddleware, handleAddUserInterest);
 
 // 관심 분야 삭제
-userRouter.delete("/interest/:userInterestId", verifyTokenMiddleware, handleDeleteUserInterest);
+userRouter.delete("/interests/:userInterestId", verifyTokenMiddleware, handleDeleteUserInterest);

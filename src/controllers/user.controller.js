@@ -1,5 +1,6 @@
 import {
   requestAddUserInterestDto,
+  requestDeleteUserInterestDto,
   userHeaderDto,
 } from "../dtos/user.dto.js";
 
@@ -61,7 +62,7 @@ export const handleAddUserInterest = async (req, res) => {
     
     const result = await addUserInterest(requestAddUserInterestDto({...req.body, userId: req.user.id}));
     console.log(result);
-    res.status(201).json(result);
+    res.status(200).json(result);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -69,10 +70,11 @@ export const handleAddUserInterest = async (req, res) => {
 
 // DELETE /api/users/interest/:userInterestId
 export const handleDeleteUserInterest = async (req, res) => {
+  console.log("유저 관심사 삭제 요청을 받았습니다!");
+
   try {
-    const userInterestId = req.params.userInterestId;
-    await deleteUserInterest(userInterestId);
-    res.status(204).send();
+    const result = await deleteUserInterest(requestDeleteUserInterestDto(req.user.id,req.params.userInterestId));
+    res.status(200).json(result);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

@@ -46,19 +46,19 @@ export const selectUserInterests = async (userId) => {
   const conn = await pool.getConnection();
   try {
     const [rows] = await conn.query(
-      `SELECT interest_category.id, interest_category.category 
+      `SELECT user_interest.id , user_interest.category_id, interest_category.category 
       FROM user_interest 
       JOIN interest_category ON user_interest.category_id = interest_category.id
       WHERE user_interest.user_id = ?`,
       [userId]
     );
+    console.log("사용자 관심사 조회 결과:");
     console.log(rows);
 
     //사용자가 관심사를 가지고 있지 않은 경우 빈 배열 반환
     if (rows.length === 0) {
       return [];
     }
-
 
     return rows;
 
@@ -102,13 +102,30 @@ export const insertUserInterest = async (data) => {
   }
 };
 
-export const removeUserInterest = async (userInterestId) => {
+export const removeUserInterest = async (data) => {
   const conn = await pool.getConnection();
   try {
-    await conn.query(
-      `DELETE FROM user_interest WHERE id = ?`,
-      [userInterestId]
+    console.log("관심사 삭제 요청 데이터:", data);
+    // 관심사 등록 ID 가 요청한 사용자의 ID인지 확인
+    const [confirm] = await conn.query(
+      `SELECT id FROM user_interest WHERE id = ? AND user_id = ?`,
+      [data.userInterestId, data.userId ]
     );
+
+    if(!confirm || confirm.length === 0) {
+      throw new Error("해당 관심사가 존재하지 않거나, 요청한 사용자의 관심사가 아닙니다.");
+    };
+
+    const deleteInterest = await conn.query(
+      `DELETE FROM user_interest WHERE id = ?`,
+      [data.userInterestId]
+    );
+
+    return deleteInterest;
+
+  }catch(err)
+  {
+    throw new Error(`오류가 발생했어요. 요청 파라미터를 확인해주세요. (${err})`);
   } finally {
     conn.release();
   }

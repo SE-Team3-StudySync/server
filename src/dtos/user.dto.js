@@ -1,3 +1,5 @@
+import { data } from "react-router-dom";
+
 export const userHeaderDto = (user) => {
     return {
         userId: user.id,
@@ -17,7 +19,8 @@ export const responseUserInfoDto = (data) => {
 
 export const responseUserInterestDto = (data) => {
   return {
-    categoryId: data.id,
+    userInterestId: data.id,
+    categoryId: data.category_id,
     categoryName: data.category
   };
 };
@@ -35,4 +38,11 @@ export const responseAddUserInterestDto = (data) => {
     categoryId: data.categoryId,
     categoryName: data.categoryName,
   }
-}
+};
+
+export const requestDeleteUserInterestDto = (userId, userInterestId) => {
+  return {
+    userId: userId,
+    userInterestId: userInterestId
+  };
+};
