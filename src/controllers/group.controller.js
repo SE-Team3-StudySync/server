@@ -1,12 +1,13 @@
 import { createGroup, getAllGroups } from '../services/group.service.js';
 import { requestCreateGroupDto } from '../dtos/group.dto.js';
 
-export const handleCreateGroup = async (req, res) => {
+export const handleCreateGroup = async (req, res, next) => {
     try {
-        const creator_id = req.user.id;
-        const groupData = requestCreateGroupDto({ ...req.body, creator_id });
-        const createdGroup = await createGroup(groupData);
-        res.status(201).json(createdGroup);
+        const data = requestCreateGroupDto({ ...req.body, userId: req.user.id });
+        
+        const createdGroupId = await createGroup(data);
+        res.status(201).json({groupId : createdGroupId});
+        
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
