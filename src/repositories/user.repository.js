@@ -105,7 +105,6 @@ export const insertUserInterest = async (data) => {
 export const removeUserInterest = async (data) => {
   const conn = await pool.getConnection();
   try {
-    console.log("관심사 삭제 요청 데이터:", data);
     // 관심사 등록 ID 가 요청한 사용자의 ID인지 확인
     const [confirm] = await conn.query(
       `SELECT id FROM user_interest WHERE id = ? AND user_id = ?`,
