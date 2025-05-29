@@ -14,8 +14,6 @@ const userRouter = express.Router();
 // 사용자 정보 조회 API
 userRouter.get('/me',verifyTokenMiddleware,handleGetUserInfo);
 
-export default userRouter;
-
 // 사용자 정보 수정
 userRouter.patch("/", verifyTokenMiddleware, handleUpdateUserInfo);
 
@@ -27,3 +25,5 @@ userRouter.post("/interests", verifyTokenMiddleware, handleAddUserInterest);
 
 // 관심 분야 삭제
 userRouter.delete("/interests/:userInterestId", verifyTokenMiddleware, handleDeleteUserInterest);
+
+export default userRouter;

@@ -3,6 +3,7 @@ import express from 'express';
 import { verifyTokenMiddleware } from '../middlewares/auth.middleware.js';
 import {
   handleCreateGroup,
+  handleCreateRequestJoinGroup,
   handleGetGroupList
 } from '../controllers/group.controller.js';
 
@@ -13,5 +14,8 @@ groupRouter.post('/', verifyTokenMiddleware, handleCreateGroup);
 
 // 그룹 목록 조회 (로그인 필요)
 groupRouter.get('/', verifyTokenMiddleware, handleGetGroupList);
+
+// 스터디 그룹 참가 요청 (로그인 필요)
+groupRouter.post('/:groupId/request', verifyTokenMiddleware, handleCreateRequestJoinGroup);
 
 export default groupRouter;

@@ -68,3 +68,35 @@ export const selectAllGroups = async () => {
     const [rows] = await pool.query(`SELECT * FROM study_group`);
     return rows;
 };
+
+export const createJoinRequest = async (data) => {
+    const conn = await pool.getConnection();
+
+    try{
+        const [confirm] = await pool.query(
+            `SELECT EXISTS(SELECT 1 FROM group_member WHERE group_id = ? AND user_id = ?) as isExistRequest;`,
+            [data.groupId, data.userId]
+        );
+
+        // 이미 존재하는 요청인지 확인 -> 존재시 error 반환
+        if(confirm[0].isExistRequest ) {
+            throw new Error("이미 해당 그룹에 참가 요청을 보냈습니다.");
+        };
+
+        const [result] = await pool.query(`
+            INSERT INTO group_member (group_id, user_id, is_approved, role)
+            VALUES (?, ?, ?, ?)
+        `, [data.groupId, data.userId, 0, 'member']);
+
+        if(!result) {
+            return null;
+        }
+
+        return result.insertId;
+
+    }catch(err) {
+        throw err;
+    }finally {
+        conn.release();
+    };
+}
