@@ -15,9 +15,24 @@ export const responseUserInfoDto = (data) => {
     };
 };
 
-export const responseInterestDto = (data) => {
+export const responseUserInterestDto = (data) => {
   return {
-    id: data.id,
-    category: data.category
+    categoryId: data.id,
+    categoryName: data.category
   };
 };
+
+export const requestAddUserInterestDto = (data) => {
+  return {
+    userId: data.userId,
+    categoryName: data.categoryName
+  };
+};
+
+export const responseAddUserInterestDto = (data) => {
+  return {
+    insertId: data.userInterestId,
+    categoryId: data.categoryId,
+    categoryName: data.categoryName,
+  }
+}

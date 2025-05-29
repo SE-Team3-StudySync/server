@@ -46,7 +46,7 @@ export const userLogIn = async (data) => {
 
         // access 토큰 발행
         // JWT_SECRET_KEY는 비밀키로 사용, expiresIn은 만료시간으로 사용
-        const accessToken = jwt.sign(payloadUserInfo, ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' });
+        const accessToken = jwt.sign(payloadUserInfo, ACCESS_TOKEN_SECRET_KEY, { expiresIn: '3h' });
 
         // refresh 토큰 발행
         const refreshToekn = jwt.sign(payloadUserInfo, REFRESH_TOKEN_SECRET_KEY, { expiresIn: '1h' });
