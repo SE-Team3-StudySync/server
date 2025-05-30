@@ -4,6 +4,12 @@ import cors from 'cors';
 import authRouter from './routers/auth.router.js';
 import userRouter from "./routers/user.router.js";
 import groupRouter from './routers/group.router.js';
+import swaggerUiExpress from 'swagger-ui-express';
+import fs from 'fs';
+
+const swaggerDocument = JSON.parse(
+  fs.readFileSync('./swagger-output.json', 'utf-8')
+);
 
 //환경변수 관리 
 dotenv.config();
@@ -16,6 +22,11 @@ app.use(cors());                            // cors 방식 허용
 app.use(express.static('public'));          // 정적 파일 접근
 app.use(express.json());                    // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
 app.use(express.urlencoded({ extended: false })); // 단순 객체 문자열 형태로 본문 데이터 해석
+app.use(
+  '/docs',
+  swaggerUiExpress.serve,
+  swaggerUiExpress.setup(swaggerDocument)
+);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
