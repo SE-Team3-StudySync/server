@@ -99,4 +99,43 @@ export const createJoinRequest = async (data) => {
     }finally {
         conn.release();
     };
+};
+
+export const updateConfirmJoinRequest = async (data) => {
+    const conn = await pool.getConnection();
+
+    try{
+        // 요청이 존재하는지 확인
+        const [confirm] = await pool.query(
+            `SELECT * FROM group_member WHERE id = ?`,
+            [data.groupMemberId]
+        );
+
+        if(confirm.length === 0) {
+            throw new Error("해당 그룹 참가 요청이 존재하지 않습니다.");
+        }
+        else if(confirm[0].is_approved === 1) {
+            throw new Error("이미 승인된 그룹 참가 요청입니다.");
+        };
+        
+        await pool.query(`
+            UPDATE group_member
+            SET is_approved = ? 
+            WHERE id = ?`, 
+            [data.isApproved, data.groupMemberId]);
+        
+        const [response] = await pool.query(`
+            SELECT * FROM group_member WHERE id = ?`, 
+            [data.groupMemberId]);
+
+        if(response[0].is_approved != data.isApproved) {
+            throw new Error("그룹 참가 요청 처리에 실패했습니다.");
+        }
+        
+        return response[0];
+    }catch(err) {
+        throw err;
+    }finally {
+        conn.release();
+    }
 }

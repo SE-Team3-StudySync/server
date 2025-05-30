@@ -1,5 +1,6 @@
 import { data } from 'react-router-dom';
-import { createJoinRequest, insertGroup, mappingGroupMember, selectAllGroups } from '../repositories/group.repository.js';
+import { createJoinRequest, insertGroup, mappingGroupMember, selectAllGroups, updateConfirmJoinRequest } from '../repositories/group.repository.js';
+import { responseConfirmJoinRequestDto } from '../dtos/group.dto.js';
 // import { responseGroupDto } from '../dtos/group.dto.js';
 
 export const createGroup = async (groupData) => {
@@ -45,6 +46,20 @@ export const createRequestJoin = async (data) => {
 
         return createdRequest;
     }catch(err){
+        throw new Error(
+            `오류가 발생했어요. 요청 파라미터를 확인해주세요. (${err})`
+        );
+    }
+};
+
+export const createResponseJoin = async(data) => {
+    try{
+        const createResponse = await updateConfirmJoinRequest(data);
+        if(!createResponse) {
+            throw new Error("그룹 참가 요청 처리에 실패했습니다.");
+        }
+        return responseConfirmJoinRequestDto(createResponse);
+    }catch(err) {
         throw new Error(
             `오류가 발생했어요. 요청 파라미터를 확인해주세요. (${err})`
         );

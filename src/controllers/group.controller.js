@@ -1,5 +1,5 @@
-import { createGroup, createRequestJoin, getAllGroups } from '../services/group.service.js';
-import { requestCreateGroupDto } from '../dtos/group.dto.js';
+import { createGroup, createRequestJoin, createResponseJoin, getAllGroups } from '../services/group.service.js';
+import { requestConfirmJoinRequestDto, requestCreateGroupDto } from '../dtos/group.dto.js';
 
 export const handleCreateGroup = async (req, res, next) => {
     console.log('그룹 생성 요청을 받았습니다!');
@@ -34,3 +34,15 @@ export const handleCreateRequestJoinGroup = async (req, res) => {
         res.status(400).json({ message: '그룹 참가 요청 생성 실패: ' + err.message });
     }
 };
+
+export const handleConfirmJoinRequest = async (req, res) => {
+    console.log('그룹 참가 처리 요청을 받았습니다!');
+
+    try {
+        const resGroup = await createResponseJoin(requestConfirmJoinRequestDto(req));
+
+        res.status(200).json({ message: '그룹 참가 요청이 성공적으로 처리되었습니다.', response: resGroup });
+    }catch (err) {
+        res.status(400).json({ message: '그룹 참가 요청 처리 실패: ' + err.message });
+    }
+}
